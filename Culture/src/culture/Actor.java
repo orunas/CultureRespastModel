@@ -16,7 +16,7 @@ public class Actor {
 	private ContinuousSpace<Object> space ;
 	private Grid<Object> grid ;
 	private Network<Object> network;
-	private static Double engagementRate = 0.2;
+	public static Double engagementRate;
 	private int[] traits;
 	private int age; //category
 	private int gainings;  // category

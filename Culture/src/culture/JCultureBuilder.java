@@ -7,6 +7,8 @@ import repast.simphony.context.space.graph.NetworkBuilder;
 import repast.simphony.context.space.grid.GridFactory;
 import repast.simphony.context.space.grid.GridFactoryFinder;
 import repast.simphony.dataLoader.ContextBuilder;
+import repast.simphony.engine.environment.RunEnvironment;
+import repast.simphony.parameter.Parameters;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.RandomCartesianAdder;
 import repast.simphony.space.graph.Network;
@@ -19,6 +21,8 @@ public class JCultureBuilder implements ContextBuilder <Object >{
 	@Override
 	public Context build(Context<Object> context) {
 		context.setId ("Culture");
+		
+		//Random.createUniform();
 		
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
 		ContinuousSpace<Object> space = spaceFactory.createContinuousSpace ("space", context ,
@@ -35,12 +39,15 @@ public class JCultureBuilder implements ContextBuilder <Object >{
 		NetworkBuilder builder = new NetworkBuilder("network", context, true);
 		Network network = builder.buildNetwork();
 		
-		int actorsCount = 100;
+		Parameters params = RunEnvironment.getInstance().getParameters();
+		
+		int actorsCount = params.getInteger("actor_count"); 
+		Actor.engagementRate = params.getDouble("engagement_rate");
 		for (int i = 0; i < actorsCount ; i++) {
 			context.add (new Actor (space , grid, network ));
 		}
 		
-		int eventCount = 10;
+		int eventCount = params.getInteger("event_count");;
 		for (int i = 0; i < eventCount ; i++) {
 			context.add (new Event (space , grid, network, String.valueOf(i) ));
 		}
